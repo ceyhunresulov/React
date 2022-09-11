@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Label, Input } from "reactstrap";
+import { Form, FormGroup, Input } from "reactstrap";
 
 export default class SearchBar extends Component {
   state = {
@@ -20,7 +20,7 @@ export default class SearchBar extends Component {
             name="text"
             id="exampleText"
             placeholder="Search movies"
-            onChange={(e) => this.setState({ searchMovi: e.target.value })}
+            onChange={this.props.getSearchValue}
           />
         </FormGroup>
       </Form>
