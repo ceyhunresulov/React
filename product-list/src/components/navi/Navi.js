@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import CartSummary from "./CartSummary";
+import React from "react";
 import {
   Collapse,
   Navbar,
@@ -8,9 +7,13 @@ import {
   Nav,
   NavItem,
   NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 
-export default class Navi extends Component {
+export default class Example extends React.Component {
   constructor(props) {
     super(props);
 
@@ -27,16 +30,16 @@ export default class Navi extends Component {
   render() {
     return (
       <div>
-        <Navbar expand="md">
+        <Navbar className=" mb-5 py-3" color="dark" light expand="md">
           <NavbarBrand className="text-white" href="/">
-            Navi
+            Redux
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ms-auto" navbar>
               <NavItem>
-                <NavLink href="/form" className="text-white">
-                  Form
+                <NavLink className="text-white" href="/components/">
+                  Components
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -47,10 +50,17 @@ export default class Navi extends Component {
                   GitHub
                 </NavLink>
               </NavItem>
-              <CartSummary
-                cart={this.props.cart}
-                removeCart={this.props.removeCart}
-              />
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle className="text-white" nav caret>
+                  Options
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem>Option 1</DropdownItem>
+                  <DropdownItem>Option 2</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem>Reset</DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
             </Nav>
           </Collapse>
         </Navbar>

@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import { ListGroup, ListGroupItem } from "reactstrap";
+import PropTypes from "prop-types";
 
 export default class CategoryList extends Component {
   state = {
     categories: [],
   };
+
+  static defaultProps = {
+    test: "ne var ne yox",
+  };
+
   componentDidMount() {
     this.getCategories();
   }
@@ -17,7 +23,7 @@ export default class CategoryList extends Component {
   render() {
     return (
       <div>
-        <h2 className="text-white">{this.props.info.title}</h2>
+        <h2 className="text-white">{this.props.test}</h2>
         <ListGroup className="py-3">
           {this.state.categories.map((category) => (
             <ListGroupItem
@@ -37,3 +43,7 @@ export default class CategoryList extends Component {
     );
   }
 }
+
+CategoryList.propTypes = {
+  test: PropTypes.string,
+};

@@ -7,6 +7,7 @@ import alertify from "alertifyjs";
 import { Route, Routes } from "react-router-dom";
 import CartList from "./CartList";
 import NotFound from "./NotFound";
+import FormDemo1 from "./FormDemo1";
 
 export default class App extends Component {
   state = { currentCategory: "", products: [], cart: [] };
@@ -57,6 +58,7 @@ export default class App extends Component {
           <Row>
             <Col xs="4" className="bg-secondary">
               <CategoryList
+                test={9}
                 currentCategory={this.state.currentCategory}
                 changeCategory={this.changeCategory}
                 info={categoryInfo}
@@ -86,6 +88,7 @@ export default class App extends Component {
                     />
                   }
                 ></Route>
+                <Route path="/form" element={<FormDemo1></FormDemo1>}></Route>
                 <Route exact path="/error" element={<NotFound />}></Route>
               </Routes>
             </Col>
