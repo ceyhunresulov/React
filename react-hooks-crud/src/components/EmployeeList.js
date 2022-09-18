@@ -1,12 +1,22 @@
 import Employee from "./Employee";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { EmployeeContext } from "../contexts/EmployeeContext";
 import AddEmployee from "./AddEmployee";
 import { Modal, ModalBody, ModalHeader, Button, ModalFooter } from "reactstrap";
+import EditEmployee from "./EditEmployee";
+import { Alert } from "reactstrap";
+import Pagination from "./Pagination";
 
 const EmployeeList = () => {
   const { employees } = useContext(EmployeeContext);
+  const { isOpenEdit } = useContext(EmployeeContext);
+  const { closeEditModal } = useContext(EmployeeContext);
+  const { showAlert } = useContext(EmployeeContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [employeePageCount] = useState(2);
+
   const [isOpen, setIsOpen] = useState(false);
+
   const handleClose = () => {
     setIsOpen(false);
   };
@@ -14,6 +24,16 @@ const EmployeeList = () => {
     setIsOpen(true);
   };
 
+  useEffect(() => {
+    handleClose();
+  }, [employees]);
+
+  const indexLastOfPage = currentPage * employeePageCount;
+  const indexFirstOfPage = indexLastOfPage - employeePageCount;
+  const employeesPage = employees
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .slice(indexFirstOfPage, indexLastOfPage);
+  const totalPages = Math.ceil(employees.length / employeePageCount);
   return (
     <>
       <div className="table-title">
@@ -35,6 +55,9 @@ const EmployeeList = () => {
           </div>
         </div>
       </div>
+      <Alert isOpen={showAlert.isOpen} color="success">
+        {showAlert.info}
+      </Alert>
       <table className="table table-striped table-hover">
         <thead>
           <tr>
@@ -46,9 +69,17 @@ const EmployeeList = () => {
           </tr>
         </thead>
         <tbody>
-          <Employee employees={employees}></Employee>
+          <Employee employees={employeesPage}></Employee>
         </tbody>
       </table>
+
+      {/* pagination */}
+      <Pagination
+        pages={totalPages}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+      ></Pagination>
+
       <Modal isOpen={isOpen}>
         <ModalHeader>Add Employee</ModalHeader>
         <ModalBody>
@@ -61,13 +92,13 @@ const EmployeeList = () => {
         </ModalFooter>
       </Modal>
       {/* edit */}
-      <Modal>
+      <Modal isOpen={isOpenEdit}>
         <ModalHeader>Edit Employee</ModalHeader>
         <ModalBody>
-          <h1>Edit</h1>
+          <EditEmployee></EditEmployee>
         </ModalBody>
         <ModalFooter>
-          <Button color="danger" onClick={handleClose}>
+          <Button color="danger" onClick={closeEditModal}>
             Close
           </Button>
         </ModalFooter>

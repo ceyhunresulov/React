@@ -1,9 +1,17 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export const EmployeeContext = createContext();
 
 const EmployeeContextProvider = (props) => {
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
+  const [updatedEmployee, setUpdatedEmployee] = useState({
+    name: "",
+    email: "",
+    address: "",
+    phone: "",
+  });
+  const [showAlert, setShowAlert] = useState({ isOpen: false, info: "" });
   const [employees, setEmployees] = useState([
     {
       id: uuidv4(),
@@ -43,14 +51,53 @@ const EmployeeContextProvider = (props) => {
   ]);
   const addEmployee = (newEmployee) => {
     setEmployees([...employees, { id: uuidv4(), ...newEmployee }]);
+    showAlertBox("new employee successfully added");
   };
 
   const removeEmployee = (id) => {
     setEmployees(employees.filter((em) => em.id !== id));
+    showAlertBox("employee successfully removed");
   };
+
+  // is Open Edit
+  const showEditModal = (newEmployee) => {
+    setIsOpenEdit(true);
+    setUpdatedEmployee(newEmployee);
+  };
+  const closeEditModal = () => {
+    setIsOpenEdit(false);
+  };
+  // edit employee
+
+  const updateEmployee = (id, newEmployee) => {
+    setEmployees(employees.map((emp) => (emp.id === id ? newEmployee : emp)));
+    showAlertBox("employee successfully updated");
+  };
+  useEffect(() => {
+    closeEditModal();
+  }, [employees]);
+
+  // alert box
+  const showAlertBox = (messaje) => {
+    setShowAlert({ isOpen: true, info: messaje });
+    setTimeout(() => {
+      setShowAlert({ isOpen: false, info: messaje });
+    }, 3000);
+  };
+
   return (
     <EmployeeContext.Provider
-      value={{ employees, addEmployee, removeEmployee }}
+      value={{
+        employees,
+        addEmployee,
+        removeEmployee,
+        showEditModal,
+        isOpenEdit,
+        updatedEmployee,
+        closeEditModal,
+        updateEmployee,
+        showAlert,
+      }}
     >
       {props.children}
     </EmployeeContext.Provider>

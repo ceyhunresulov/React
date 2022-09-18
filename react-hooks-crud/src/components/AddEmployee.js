@@ -1,5 +1,5 @@
 import { Button, Form, FormGroup, Input } from "reactstrap";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { EmployeeContext } from "../contexts/EmployeeContext";
 
 const AddEmployee = () => {
